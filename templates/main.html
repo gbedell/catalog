@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+	{% block content %}
+	<br>
+	{% for c in categories %}
+
+		<a href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
+		<br>
+	{% endfor %}
+	<br>
+	<br>
+	<A href='{{url_for("newCategory") }}'>New Category</a>
+
+
+
+	{% endblock %}
+
+
+</body>
+
+</html>

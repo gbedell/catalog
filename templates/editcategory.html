@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+	{% block content %}
+
+	<p>Edit {{ category.name }}</p>
+
+	<form action='{{url_for("editCategory", category_id = category.id) }}' method='POST'>
+		Name: <input type='text' name='name' placeholder='{{ category.name }}'>
+		<input type='submit' value='Edit'>
+	</form>
+
+	{% endblock %}
+
+
+</body>
+
+</html>
