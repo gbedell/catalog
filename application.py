@@ -36,7 +36,7 @@ def showLogin():
 	login_session['state'] = state
 	return render_template('login.html', STATE = state)
 
-@app.route('/gconnect/', methods=['POST'])
+@app.route('/gconnect', methods=['POST'])
 def gconnect():
 	# Validate state token
 	if request.args.get('state') != login_session['state']:
@@ -45,7 +45,7 @@ def gconnect():
 		return response
 
 	# Obtain authorization code
-	code = request.database
+	code = request.data
 
 	try:
 		# Upgrade the authorization code into a credentials object
@@ -92,7 +92,7 @@ def gconnect():
 		return response
 
 	# Store the access token in the session for later use.
-	login_session['credentials'] = credentials
+	login_session['credentials'] = credentials.access_token
 	login_session['gplus_id'] = gplus_id
 
 	# Get user info
