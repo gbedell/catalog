@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+	{% block content %}
+
+	<p>Welcome to the {{ category.name }} page!</p>
+	<br>
+	<br>
+
+	{% for item in items %}
+
+		<a href='{{url_for("showItem", category_id = item.category_id, item_id = item.id) }}'>{{ item.name }}</a>
+		<br>
+
+	{% endfor %}
+
+	{% endblock %}
+
+
+</body>
+
+</html>

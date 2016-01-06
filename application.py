@@ -106,6 +106,12 @@ def gconnect():
 	login_session['picture'] = data['picture']
 	login_session['email'] = data['email']
 
+	# See if user exists, if not, make a new User
+	user_id = getUserID(login_session['email'])
+	if not user_id:
+		user_id = createUser(login_session)
+	login_session['user_id'] = user_id
+
 	output = ''
 	output += '<h1>Welcome, '
 	output += login_session['username']
@@ -170,18 +176,21 @@ def itemsInCategoryJSON(category_id):
 @app.route('/catalog/')
 def mainPage():
 	categories = session.query(Category).all()
-	return render_template('main.html', categories = categories)
+	if 'username' not in login_session:
+		return render_template('publicmain.html', categories = categories)
+	else:
+		return render_template('main.html', categories = categories)
 
 # Page for a user to add a new category
 @app.route('/catalog/new/', methods=['GET', 'POST'])
 def newCategory():
-
 	if request.method == 'POST':
-		newCategory = Category(name = request.form['name'])
+		newCategory = Category(
+			name = request.form['name'],
+			user_id = login_session['user_id'])
 		session.add(newCategory)
 		session.commit()
 		return redirect(url_for('mainPage'))
-	
 	else:
 		return render_template('newcategory.html')
 
@@ -218,7 +227,11 @@ def deleteCategory(category_id):
 def categoryPage(category_id):
 	category = session.query(Category).filter_by(id = category_id).one()
 	items = session.query(Item).filter_by(category_id = category_id).all()
-	return render_template('categorypage.html', items = items, category = category)
+	creator = getUserInfo(category.user_id)
+	if 'username' not in login_session or creator.id != login_session['user_id']:
+		return render_template('publiccategorypage.html', items = items, category = category)
+	else:
+		return render_template('categorypage.html', items = items, category = category)
 
 
 # Page for a user to add a new item to an existing category
@@ -230,7 +243,8 @@ def newItem(category_id):
 		newItem = Item(
 			name = request.form['name'],
 			description = request.form['description'],
-			category_id = category_id
+			category_id = category_id,
+			user_id = login_session['user_id']
 			)
 		session.add(newItem)
 		session.commit()
@@ -241,9 +255,13 @@ def newItem(category_id):
 
 # Page that shows a specific item
 @app.route('/catalog/<int:category_id>/<int:item_id>/')
-def showItem(category_id, item_id):
+def itemPage(category_id, item_id):
 	item = session.query(Item).filter_by(id = item_id).one()
-	return render_template('itempage.html', item = item)
+	creator = getUserInfo(item.user_id)
+	if 'username' not in login_session or creator.id != login_session['user_id']:
+		return render_template('publicitempage.html', item = item)
+	else:
+		return render_template('itempage.html', item = item)
 
 
 # Page for a user to edit an existing item in an existing category
@@ -279,6 +297,31 @@ def deleteItem(category_id, item_id):
 
 	else:
 		return render_template('deleteitem.html', item = deletedItem)
+
+
+def getUserID(email):
+	try:
+		user = session.query(User).filter_by(email = email).one()
+		return user.id
+	except:
+		return None
+
+def getUserInfo(user_id):
+	user = session.query(User).filter_by(id = user_id).one()
+	return user
+
+def createUser(login_session):
+	newUser = User(
+		name = login_session['username'],
+		email = login_session['email'],
+		picture = login_session['picture']
+	)
+	session.add(newUser)
+	session.commit()
+
+	user = session.query(User).filter_by(email = login_session['email']).one()
+	return user.id
+
 
 
 if __name__ == '__main__':

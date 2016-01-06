@@ -14,10 +14,10 @@
 	<a href='{{url_for("deleteCategory", category_id = category.id) }}'>Delete Category</a>
 	<br>
 	<br>
-
+	
 	{% for item in items %}
 
-		<a href='{{url_for("showItem", category_id = item.category_id, item_id = item.id) }}'>{{ item.name }}</a>
+		<a href='{{url_for("itemPage", category_id = item.category_id, item_id = item.id) }}'>{{ item.name }}</a>
 		<br>
 
 	{% endfor %}
