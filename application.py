@@ -29,12 +29,11 @@ session = DBSession()
 
 # Create a state token to prevent request forgery.
 # Store it in the session for later validation.
-@app.route('/login/')
-def showLogin():
-	state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-	for x in xrange(32))
-	login_session['state'] = state
-	return render_template('login.html', STATE = state)
+# @app.route('/')
+# def showLogin():
+# 	state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+# 	for x in xrange(32))
+# 	login_session['state'] = state
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -112,11 +111,7 @@ def gconnect():
 		user_id = createUser(login_session)
 	login_session['user_id'] = user_id
 
-	output = ''
-	output += '<p>Welcome, '
-	output += login_session['username']
-	output += '!</p>'
-	print 'done!'
+	output = "You're signed in!"
 	return output
 
 #DISCONNECT - Revoke a current user's token and reset their login_session.
@@ -175,11 +170,18 @@ def itemsInCategoryJSON(category_id):
 @app.route('/')
 @app.route('/catalog/')
 def mainPage():
+	# Create a state token to prevent request forgery.
+	# Store it in the session for later validation.
+	state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+	login_session['state'] = state
+
 	categories = session.query(Category).all()
 	if 'username' not in login_session:
-		return render_template('publicmain.html', categories = categories)
+		return render_template('publicmain.html', categories = categories, STATE = state)
 	else:
-		return render_template('main.html', categories = categories)
+		username = login_session['username']
+		user_id = login_session
+		return render_template('main.html', categories = categories, username = username)
 
 # Page for a user to add a new category
 @app.route('/catalog/new/', methods=['GET', 'POST'])
@@ -225,7 +227,7 @@ def deleteCategory(category_id):
 # Page to show all of the items in a category
 @app.route('/catalog/<int:category_id>/')
 def categoryPage(category_id):
-	category = session.query(Category).filter_by(id = category_id).all()
+	category = session.query(Category).filter_by(id = category_id).one()
 	items = session.query(Item).filter_by(category_id = category_id).all()
 	creator = getUserInfo(category.user_id)
 	if 'username' not in login_session or creator.id != login_session['user_id']:
