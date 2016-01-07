@@ -8,7 +8,7 @@
 <body>
 
 	{% block header %}
-		<a class='btn btn-default' href='{{url_for("gdisconnect") }}' role='button'>Logout</a>
+		<a class='btn btn-default' onclick='logout' href='{{url_for("gdisconnect") }}' role='button'>Logout</a>
 	{% endblock %}
 
 	{% block content %}
