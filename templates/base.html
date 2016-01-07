@@ -1,23 +1,81 @@
 <html>
 
 <head>
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'>
+	</script>
+	<script src='//apis.google.com/js/platform.js?onload=start' async defer>
+	</script>
+
+	<!-- Bootstrap -->
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+
+	<style>
+		* {
+			font-family: calibri;
+		}
+		header,
+		footer {
+			background-color: #4747d1;
+		}
+		footer {
+			color: white;
+			padding: 2px 2px 0px 10px;
+			font-style: italic;
+		}
+		#main-link,
+		#login,
+		#logout {
+			vertical-align: middle;
+			margin: 5px;
+		}
+		#main-link {
+			font-size: 22px;
+			margin-left: 25px;
+			color: white;
+		}
+		#logout {
+			display: none;
+		}
+		#login,
+		#logout {
+			margin-left: 600px;
+			color: #4747d1;
+			font-weight: bold;
+		}
+		.container {
+			width: 100%;
+		}
+		#result {
+			font-style: italic;
+			color: #4747d1;
+		}
+	</style>
 </head>
 
 <body>
 
 	<header>
-		<a href='{{url_for("mainPage") }}'>Catalog Application</a>
+		<a id='main-link' href='{{url_for("mainPage") }}'>Catalog Application</a>
+		<a id='login' class='btn btn-default' href='{{url_for("showLogin") }}' role='button'>Login</a>
+		<a id='logout' class='btn btn-default' href='{{url_for("gdisconnect") }}' role='button'>Logout</a>
 	</header>
 
-	{% block content %}
-	{% endblock %}
+	<div class='container'>
+
+		{% block content %}
+		{% endblock %}
+
+	</div>
 
 
 	<footer>
-		Developed by Gavin Bedell
+		<p>Developed by Gavin Bedell</p>
 	</footer>
 
-
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 

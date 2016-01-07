@@ -113,9 +113,9 @@ def gconnect():
 	login_session['user_id'] = user_id
 
 	output = ''
-	output += '<h1>Welcome, '
+	output += '<p>Welcome, '
 	output += login_session['username']
-	output += '!</h1>'
+	output += '!</p>'
 	print 'done!'
 	return output
 
@@ -225,7 +225,7 @@ def deleteCategory(category_id):
 # Page to show all of the items in a category
 @app.route('/catalog/<int:category_id>/')
 def categoryPage(category_id):
-	category = session.query(Category).filter_by(id = category_id).one()
+	category = session.query(Category).filter_by(id = category_id).all()
 	items = session.query(Item).filter_by(category_id = category_id).all()
 	creator = getUserInfo(category.user_id)
 	if 'username' not in login_session or creator.id != login_session['user_id']:
