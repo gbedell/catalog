@@ -118,7 +118,7 @@ def gconnect():
 @app.route('/gdisconnect/')
 def gdisconnect():
 	access_token = login_session['access_token']
-	print "In gdisconnect access token is %s", access_token
+	print "In gdisconnect access token is %s" % access_token
 	print 'User name is: '
 	print login_session['username']
 	if access_token is None:
@@ -127,7 +127,7 @@ def gdisconnect():
 			json.dumps('Current user is not connected.'), 401)
 		response.headers['Content-Type'] = 'application/json'
 		return response
-	url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+	url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
 	h = httplib2.Http()
 	result = h.request(url, 'GET')[0]
 	print 'Result is'

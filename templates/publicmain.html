@@ -52,6 +52,7 @@
 						// Handle or verify the server response if necessary.
 						if (result) {
 							console.log('Success');
+							window.location.href='{{url_for("mainPage") }}';
 						}
 						else if (authResult['error']) {
 							console.log('There was an error: ' + authResult['error']);
