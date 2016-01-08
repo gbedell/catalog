@@ -27,14 +27,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Create a state token to prevent request forgery.
-# Store it in the session for later validation.
-# @app.route('/')
-# def showLogin():
-# 	state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-# 	for x in xrange(32))
-# 	login_session['state'] = state
-
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
 	# Validate state token
@@ -111,8 +103,7 @@ def gconnect():
 		user_id = createUser(login_session)
 	login_session['user_id'] = user_id
 
-	output = "You're signed in!"
-	return output
+	return redirect(url_for('mainPage'))
 
 #DISCONNECT - Revoke a current user's token and reset their login_session.
 @app.route('/gdisconnect/')
@@ -281,7 +272,7 @@ def editItem(category_id, item_id):
 			editedItem.description = request.form['description']
 		session.add(editedItem)
 		session.commit()
-		return redirect(url_for('showItem', category_id = category_id, item_id = item_id))
+		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
 
 	else:
 		return render_template('edititem.html', item = editedItem)
