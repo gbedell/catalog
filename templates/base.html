@@ -8,46 +8,41 @@
 		* {
 			font-family: calibri;
 		}
-		header {
-			height: 60px;
-		}
 		header,
 		footer {
 			background-color: #4747d1;
-			width: 100%;
+			color: white;
+			height: 50px;
 		}
 		footer {
-			color: white;
-			padding: 5px 2px 0px 10px;
-			height: 30px;
+			padding-top: 12px;
+			font-size: 18px;
+		}
+		#main-link {
+			padding-top: 3px;
 		}
 		#main-link-name {
 			font-size: 30px;
 			color: white;
-			display: block;
-			height: 100%;
-			padding-top: 5px;
-			padding-left: 20px;
 		}
-		#logout {
+		#logout,
+		#signinButton {
 			color: #4747d1;
 			font-weight: bold;
-		}
-		.container {
-			width: 100%;
-		}
-		#main-link {
-			float: left;
-			width: 50%;
 			height: 100%;
-		}
-		#signinButton,
-		#logout {
+			padding-top: 7px;
 			float: right;
-			width: 50%;
-			height: 100%;
-			padding-top: 12.5px;
-			padding-left: 500px;
+		}
+		#content {
+			margin-top: 5px;
+			margin-bottom: 5px;
+			border: 1px solid black;
+			border-radius: 5px;
+			height: 90%;
+		}
+		.category-link {
+			font-size: 18px;
+			margin-bottom: 10px;
 		}
 	</style>
 
@@ -60,33 +55,43 @@
 
 <body>
 
-		<header>
-			<div id='main-link'>
+	<div class='container-fluid'>
+
+		<header class='row'>
+			<div class='col-md-6' id='main-link'>
 				<a id='main-link-name' href='{{url_for("mainPage") }}'>Catalog Application</a>
 			</div>
+			<div class='col-md-6' id='login-logout'>
 				{% block header %}
 				{% endblock header %}
+			</div>
 		</header>
 
+		<div class='row'>
+			<div id='content' class='col-md-12'>
 
-	<div class='container'>
+				{% block content %}
+				{% endblock %}
 
-		{% block content %}
-		{% endblock %}
+			</div>
+
+		</div>
+
+		<footer class='row'>
+			<div class='col-md-12'>
+				<p id='footer-text'>
+					Developed by Gavin Bedell | <a href='https://github.com/gbedell'>Github
+					</a> | <a href='https://www.linkedin.com/in/gavinbedell'>LinkedIn</a> |
+				</p>
+			</div>
+		</footer>
 
 	</div>
 
-	<footer>
-		<p>
-			Developed by Gavin Bedell | <a href='https://github.com/gbedell'>Github
-			</a> | <a href='https://www.linkedin.com/in/gavinbedell'>LinkedIn</a> |
-		</p>
-	</footer>
-
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/static/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="/static/js/bootstrap.min.js"></script>
 
 </body>
 

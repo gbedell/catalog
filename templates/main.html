@@ -15,19 +15,22 @@
 
 	{% block content %}
 
-		<p>Welcome, {{ username }}!</p>
-		<br>
-		This is the main.html page
+		<div>
 
-		{% for c in categories %}
+			<p>Welcome, {{ username }}!</p>
 
-			<a href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
-			<br>
-		{% endfor %}
+			{% for c in categories %}
 
-		<br>
-		<br>
-		<a href='{{url_for("newCategory") }}'>New Category</a>
+				<a href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
+				</br>
+				
+			{% endfor %}
+
+			</br>
+			</br>
+			<a href='{{url_for("newCategory") }}'>New Category</a>
+
+		</div>
 
 	{% endblock %}
 

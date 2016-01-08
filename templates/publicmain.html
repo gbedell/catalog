@@ -22,15 +22,14 @@
 	{% endblock header %}
 
 	{% block content %}
-		This is the public main page
-		<br>
+		<h4>Categories</h4>
+
 		{% for c in categories %}
 
-			<a href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
-			<br>
+			<a class='category-link' href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
+			</br>
+
 		{% endfor %}
-		<br>
-		<br>
 
 		<script>
 		function signInCallback(authResult) {
