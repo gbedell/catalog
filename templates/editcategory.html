@@ -9,12 +9,15 @@
 
 	{% block content %}
 
-	<p>Edit {{ category.name }}</p>
+	<p class='welcome-message'>Edit {{ category.name }}</p>
 
 	<form action='{{url_for("editCategory", category_id = category.id) }}' method='POST'>
 		Name: <input type='text' name='name' placeholder='{{ category.name }}'>
 		Picture: <input type='text' name='picture' placeholder='{{ category.picture }}'>
-		<input type='submit' value='Edit'>
+		<input type='submit' value='Edit' class='btn btn-default' role='button'>
+		<a href='{{url_for("categoryPage", category_id = category.id) }}' class='btn btn-default' role='button'>
+			Cancel
+		</a>
 	</form>
 
 	{% endblock %}
