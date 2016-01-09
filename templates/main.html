@@ -17,18 +17,26 @@
 
 		<div>
 
-			<p>Welcome, {{ username }}!</p>
+			<p id='welcome-message'>Welcome, {{ username }}!</p>
+
+			<div class='row'>
 
 			{% for c in categories %}
 
-				<a href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
-				</br>
-				
+				<div class='col-md-4'>
+					<a href='{{url_for("categoryPage", category_id = c.id) }}' class='thumbnail' style='height: 300px;'>
+						<span class='category-name' style='display: block; text-align: center;'>{{ c.name }}</span>
+						<img src='{{ c.picture }}' class='category-picture' style='width: 100%; height: 100%; max-height: 250px;'>
+					</a>
+				</div>
+
 			{% endfor %}
 
-			</br>
-			</br>
-			<a href='{{url_for("newCategory") }}'>New Category</a>
+			</div>
+
+			<div class='row' style='margin: 0 5px 0 5px'>
+				<a href='{{url_for("newCategory") }}' class='col-md-12 btn btn-default' role='button'>New Category</a>
+			</div>
 
 		</div>
 

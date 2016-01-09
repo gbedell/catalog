@@ -181,6 +181,7 @@ def newCategory():
 	if request.method == 'POST':
 		newCategory = Category(
 			name = request.form['name'],
+			picture = request.form['picture'],
 			user_id = login_session['user_id'])
 		session.add(newCategory)
 		session.commit()
@@ -197,6 +198,8 @@ def editCategory(category_id):
 	if request.method == 'POST':
 		if request.form['name']:
 			editedCategory.name = request.form['name']
+		if request.form['form']:
+			editedCategory.picture = request.form['picture']
 		session.add(editedCategory)
 		session.commit()
 		return redirect(url_for('categoryPage', category_id = category_id))
@@ -237,6 +240,7 @@ def newItem(category_id):
 		newItem = Item(
 			name = request.form['name'],
 			description = request.form['description'],
+			picture = request.form['picture'],
 			category_id = category_id,
 			user_id = login_session['user_id']
 			)
@@ -270,6 +274,8 @@ def editItem(category_id, item_id):
 			editedItem.name = request.form['name']
 		if request.form['description']:
 			editedItem.description = request.form['description']
+		if request.form['picture']:
+			editedItem.picture = request.form['picture']
 		session.add(editedItem)
 		session.commit()
 		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))

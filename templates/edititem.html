@@ -14,6 +14,7 @@
 		<form action='{{url_for("editItem", category_id = item.category_id, item_id = item.id) }}' method='POST'>
 			Name: <input type='text' name='name' placeholder='{{ item.name }}'>
 			Description: <input type='text' name='description' placeholder='{{ item.description }}'>
+			Picture: <input type='text' name='picture' placeholder='{{ item.picture }}'>
 			<input type='submit' value='Edit'>
 		</form>
 

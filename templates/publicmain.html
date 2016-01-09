@@ -22,14 +22,21 @@
 	{% endblock header %}
 
 	{% block content %}
-		<h4>Categories</h4>
 
-		{% for c in categories %}
+		<div class='row'>
 
-			<a class='category-link' href='{{url_for("categoryPage", category_id = c.id) }}'>{{ c.name }}</a>
-			</br>
+			{% for c in categories %}
 
-		{% endfor %}
+				<div class='col-md-4'>
+					<a href='{{url_for("categoryPage", category_id = c.id) }}' class='thumbnail' style='height: 300px;'>
+						<span class='category-name' style='display: block; text-align: center;'>{{ c.name }}</span>
+						<img src='{{ c.picture }}' class='category-picture' style='width: 100%; height: 100%; max-height: 250px;'>
+					</a>
+				</div>
+
+			{% endfor %}
+
+		</div>
 
 		<script>
 		function signInCallback(authResult) {

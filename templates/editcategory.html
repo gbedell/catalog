@@ -13,6 +13,7 @@
 
 	<form action='{{url_for("editCategory", category_id = category.id) }}' method='POST'>
 		Name: <input type='text' name='name' placeholder='{{ category.name }}'>
+		Picture: <input type='text' name='picture' placeholder='{{ category.picture }}'>
 		<input type='submit' value='Edit'>
 	</form>
 
