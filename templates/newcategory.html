@@ -9,12 +9,15 @@
 
 	{% block content %}
 
-	<p>Let's add a new Category!</p>
+	<p class='welcome-message'>Let's add a new Category!</p>
 
 	<form action='{{url_for("newCategory") }}' method='POST'>
 		Name: <input type='text' name='name' placeholder='Enter new name here' required>
 		Picture: <input type='text' name='picture' placeholder='Enter link to picture here' required>
-		<input type='submit' value='Create'>
+		<input type='submit' value='Create' class='btn btn-default' role='button'>
+		<a href='{{url_for("mainPage") }}' class='btn btn-default' role='button'>
+			Cancel
+		</a>
 	</form>
 
 	{% endblock %}

@@ -239,7 +239,7 @@ def categoryPage(category_id):
 
 
 # Page for a user to add a new item to an existing category
-@app.route('/catalog/<int:category_id>/new-item/', methods = ['GET', 'POST'])
+@app.route('/catalog/<int:category_id>/new/', methods = ['GET', 'POST'])
 def newItem(category_id):
 	if 'username' not in login_session:
 		return redirect(url_for('categoryPage', category_id = category_id))
