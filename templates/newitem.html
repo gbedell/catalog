@@ -11,9 +11,9 @@
 	<p>Let's add a new item!</p>
 
 	<form action='{{url_for("newItem", category_id = category_id) }}' method='POST'>
-		Name: <input type='text' name='name' placeholder='Enter new item name here'>
+		Name: <input type='text' name='name' placeholder='Enter new item name here' required>
 		Description: <input type='text' name='description' placeholder='Enter a short description of the item'>
-		Picture: <input type='text' name='picture' placeholder='Enter a link to picture here'>
+		Picture: <input type='text' name='picture' placeholder='Enter a link to picture here' required>
 		<input type='submit' value='Create'>
 	</form>
 	{% endblock %}
