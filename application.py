@@ -178,6 +178,9 @@ def mainPage():
 # Page for a user to add a new category
 @app.route('/catalog/new/', methods=['GET', 'POST'])
 def newCategory():
+	if 'username' not in login_session:
+		return redirect(url_for('mainPage'))
+
 	if request.method == 'POST':
 		newCategory = Category(
 			name = request.form['name'],
@@ -193,8 +196,10 @@ def newCategory():
 @app.route('/catalog/<int:category_id>/edit/', methods = ['GET', 'POST'])
 def editCategory(category_id):
 	if 'username' not in login_session:
-		return redirect['/login']
+		return redirect(url_for('categoryPage', category_id = category_id))
+
 	editedCategory = session.query(Category).filter_by(id = category_id).one()
+	
 	if request.method == 'POST':
 		if request.form['name']:
 			editedCategory.name = request.form['name']
@@ -210,8 +215,10 @@ def editCategory(category_id):
 @app.route('/catalog/<int:category_id>/delete/', methods = ['GET', 'POST'])
 def deleteCategory(category_id):
 	if 'username' not in login_session:
-		return redirect('/login')
+		return redirect(url_for('categoryPage', category_id = category_id))
+
 	deletedCategory = session.query(Category).filter_by(id = category_id).one()
+	
 	if request.method == 'POST':
 		session.delete(deletedCategory)
 		session.commit()
@@ -235,7 +242,8 @@ def categoryPage(category_id):
 @app.route('/catalog/<int:category_id>/new-item/', methods = ['GET', 'POST'])
 def newItem(category_id):
 	if 'username' not in login_session:
-		return redirect('/login')
+		return redirect(url_for('categoryPage', category_id = category_id))
+
 	if request.method == 'POST':
 		newItem = Item(
 			name = request.form['name'],
@@ -266,7 +274,8 @@ def itemPage(category_id, item_id):
 @app.route('/catalog/<int:category_id>/<int:item_id>/edit/', methods = ['GET', 'POST'])
 def editItem(category_id, item_id):
 	if 'username' not in login_session:
-		return redirect('/login')
+		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
+	
 	editedItem = session.query(Item).filter_by(id = item_id).one()
 
 	if request.method == 'POST':
@@ -287,7 +296,8 @@ def editItem(category_id, item_id):
 @app.route('/catalog/<int:category_id>/<int:item_id>/delete/', methods = ['GET', 'POST'])
 def deleteItem(category_id, item_id):
 	if 'username' not in login_session:
-		return redirect('/login')
+		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
+	
 	deletedItem = session.query(Item).filter_by(id = item_id).one()
 
 	if request.method == 'POST':
