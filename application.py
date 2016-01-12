@@ -203,7 +203,7 @@ def editCategory(category_id):
 	if request.method == 'POST':
 		if request.form['name']:
 			editedCategory.name = request.form['name']
-		if request.form['form']:
+		if request.form['picture']:
 			editedCategory.picture = request.form['picture']
 		session.add(editedCategory)
 		session.commit()
