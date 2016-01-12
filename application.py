@@ -14,6 +14,8 @@ import json
 from flask import make_response
 import requests
 
+from functools import wraps
+
 app = Flask(__name__)
 
 CLIENT_ID = json.loads(
@@ -26,6 +28,15 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+def login_required(f):
+	@wraps(f)
+	def decorated_function(*args, **kwargs):
+		if 'username' in login_session:
+			return f(*args, **kwargs)
+		else:
+			return redirect(url_for('mainPage', next=request.url))
+	return decorated_function
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -168,19 +179,18 @@ def mainPage():
 	login_session['state'] = state
 
 	categories = session.query(Category).all()
+	
 	if 'username' not in login_session:
 		return render_template('publicmain.html', categories = categories, STATE = state)
 	else:
 		username = login_session['username']
-		user_id = login_session
 		return render_template('main.html', categories = categories, username = username)
+
 
 # Page for a user to add a new category
 @app.route('/catalog/new/', methods=['GET', 'POST'])
+@login_required
 def newCategory():
-	if 'username' not in login_session:
-		return redirect(url_for('mainPage'))
-
 	if request.method == 'POST':
 		newCategory = Category(
 			name = request.form['name'],
@@ -194,10 +204,8 @@ def newCategory():
 
 # Page for a user to edit an existing category
 @app.route('/catalog/<int:category_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editCategory(category_id):
-	if 'username' not in login_session:
-		return redirect(url_for('categoryPage', category_id = category_id))
-
 	editedCategory = session.query(Category).filter_by(id = category_id).one()
 	
 	if request.method == 'POST':
@@ -213,10 +221,8 @@ def editCategory(category_id):
 
 # Page for a user to delete an existing category
 @app.route('/catalog/<int:category_id>/delete/', methods = ['GET', 'POST'])
+@login_required
 def deleteCategory(category_id):
-	if 'username' not in login_session:
-		return redirect(url_for('categoryPage', category_id = category_id))
-
 	deletedCategory = session.query(Category).filter_by(id = category_id).one()
 	
 	if request.method == 'POST':
@@ -240,10 +246,8 @@ def categoryPage(category_id):
 
 # Page for a user to add a new item to an existing category
 @app.route('/catalog/<int:category_id>/new/', methods = ['GET', 'POST'])
+@login_required
 def newItem(category_id):
-	if 'username' not in login_session:
-		return redirect(url_for('categoryPage', category_id = category_id))
-
 	if request.method == 'POST':
 		newItem = Item(
 			name = request.form['name'],
@@ -272,10 +276,8 @@ def itemPage(category_id, item_id):
 
 # Page for a user to edit an existing item in an existing category
 @app.route('/catalog/<int:category_id>/<int:item_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editItem(category_id, item_id):
-	if 'username' not in login_session:
-		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
-	
 	editedItem = session.query(Item).filter_by(id = item_id).one()
 
 	if request.method == 'POST':
@@ -294,10 +296,8 @@ def editItem(category_id, item_id):
 
 # Page for a user to delete an existing item in an existing category
 @app.route('/catalog/<int:category_id>/<int:item_id>/delete/', methods = ['GET', 'POST'])
+@login_required
 def deleteItem(category_id, item_id):
-	if 'username' not in login_session:
-		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
-	
 	deletedItem = session.query(Item).filter_by(id = item_id).one()
 
 	if request.method == 'POST':
