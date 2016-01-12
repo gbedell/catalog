@@ -207,6 +207,8 @@ def newCategory():
 @login_required
 def editCategory(category_id):
 	editedCategory = session.query(Category).filter_by(id = category_id).one()
+	current_user_id = getUserID(login_session['email'])
+	creator_user_id = editedCategory.user_id
 	
 	if request.method == 'POST':
 		if request.form['name']:
@@ -217,20 +219,28 @@ def editCategory(category_id):
 		session.commit()
 		return redirect(url_for('categoryPage', category_id = category_id))
 	else:
-		return render_template('editcategory.html', category = editedCategory)
+		if current_user_id == creator_user_id:
+			return render_template('editcategory.html', category = editedCategory)
+		else:
+			return redirect(url_for('categoryPage', category_id = category_id))
 
 # Page for a user to delete an existing category
 @app.route('/catalog/<int:category_id>/delete/', methods = ['GET', 'POST'])
 @login_required
 def deleteCategory(category_id):
 	deletedCategory = session.query(Category).filter_by(id = category_id).one()
+	current_user_id = getUserID(login_session['email'])
+	creator_user_id = deletedCategory.user_id
 	
 	if request.method == 'POST':
 		session.delete(deletedCategory)
 		session.commit()
 		return redirect(url_for('mainPage'))
 	else:
-		return render_template('deletecategory.html', category = deletedCategory)
+		if current_user_id == creator_user_id:
+			return render_template('deletecategory.html', category = deletedCategory)
+		else:
+			return redirect(url_for('categoryPage', category_id = category_id))
 
 # Page to show all of the items in a category
 @app.route('/catalog/<int:category_id>/')
@@ -238,7 +248,7 @@ def categoryPage(category_id):
 	category = session.query(Category).filter_by(id = category_id).one()
 	items = session.query(Item).filter_by(category_id = category_id).all()
 	creator = getUserInfo(category.user_id)
-	if 'username' not in login_session or creator.id != login_session['user_id']:
+	if 'username' not in login_session:
 		return render_template('publiccategorypage.html', items = items, category = category)
 	else:
 		return render_template('categorypage.html', items = items, category = category)
@@ -268,7 +278,7 @@ def newItem(category_id):
 def itemPage(category_id, item_id):
 	item = session.query(Item).filter_by(id = item_id).one()
 	creator = getUserInfo(item.user_id)
-	if 'username' not in login_session or creator.id != login_session['user_id']:
+	if 'username' not in login_session:
 		return render_template('publicitempage.html', item = item)
 	else:
 		return render_template('itempage.html', item = item)
@@ -279,6 +289,8 @@ def itemPage(category_id, item_id):
 @login_required
 def editItem(category_id, item_id):
 	editedItem = session.query(Item).filter_by(id = item_id).one()
+	current_user_id = getUserID(login_session['email'])
+	creator_user_id = editedItem.user_id
 
 	if request.method == 'POST':
 		if request.form['name']:
@@ -290,23 +302,29 @@ def editItem(category_id, item_id):
 		session.add(editedItem)
 		session.commit()
 		return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
-
 	else:
-		return render_template('edititem.html', item = editedItem)
+		if current_user_id == creator_user_id:
+			return render_template('edititem.html', item = editedItem)
+		else:
+			return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
 
 # Page for a user to delete an existing item in an existing category
 @app.route('/catalog/<int:category_id>/<int:item_id>/delete/', methods = ['GET', 'POST'])
 @login_required
 def deleteItem(category_id, item_id):
 	deletedItem = session.query(Item).filter_by(id = item_id).one()
+	current_user_id = getUserID(login_session['email'])
+	creator_user_id = deletedItem.user_id
 
 	if request.method == 'POST':
 		session.delete(deletedItem)
 		session.commit()
 		return redirect(url_for('categoryPage', category_id = category_id))
-
 	else:
-		return render_template('deleteitem.html', item = deletedItem)
+		if current_user_id == creator_user_id:
+			return render_template('deleteitem.html', item = deletedItem)
+		else:
+			return redirect(url_for('itemPage', category_id = category_id, item_id = item_id))
 
 
 def getUserID(email):
