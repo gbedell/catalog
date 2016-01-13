@@ -53,4 +53,4 @@ Once a category is created, you can create items within that category by visitin
 
 You can also edit and delete any categories or items that the user has created. You're not able to edit or delete items or categories that you didn't create.
 
-You can also access JSON pages for category and user information. Simply navigate to that specific category or item page, and add '/JSON' to the end of the URL.
+You can also access JSON pages for category and item information. Simply navigate to that specific category or item page, and add '/JSON' to the end of the URL.
