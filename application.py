@@ -173,7 +173,7 @@ def itemsInCategoryJSON(category_id):
 @app.route('/catalog/<int:category_id>/<int:item_id>/JSON/')
 def itemJSON(category_id, item_id):
 	item = session.query(Item).filter_by(category_id = category_id, id = item_id).one()
-	return jsonify(item=[i.serialize for i in item])
+	return jsonify(item=item.serialize)
 
 # Main page that lists all of the categories
 @app.route('/')
