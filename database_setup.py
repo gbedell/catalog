@@ -32,6 +32,7 @@ class Category(Base):
     picture = Column(String, nullable = False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    items = relationship(Item, cascade='delete')
 
     @property
     def serialize(self):
@@ -50,7 +51,7 @@ class Item(Base):
     description = Column(String(250), nullable = False)
     picture = Column(String, nullable = False)
     category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship(Category, cascade='delete')
+    category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
