@@ -169,6 +169,12 @@ def itemsInCategoryJSON(category_id):
 	items = session.query(Item).filter_by(category_id = category_id).all()
 	return jsonify(items=[i.serialize for i in items])
 
+# JSON API to view a single Item in a Category
+@app.route('/catalog/<int:category_id>/<int:item_id>/JSON/')
+def itemJSON(category_id, item_id):
+	item = session.query(Item).filter_by(category_id = category_id, id = item_id).one()
+	return jsonify(item=[i.serialize for i in item])
+
 # Main page that lists all of the categories
 @app.route('/')
 @app.route('/catalog/')

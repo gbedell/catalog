@@ -32,7 +32,6 @@ class Category(Base):
     picture = Column(String, nullable = False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-    items = relationship(Item, cascade='delete')
 
     @property
     def serialize(self):
